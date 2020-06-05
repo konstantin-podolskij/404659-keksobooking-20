@@ -16,8 +16,8 @@ var MAX_COUNT_OFFERS = 8;
 var HOUSING_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMEIN_HOURS = ['12:00', '13:00', '14:00'];
 var TIMEOUT_HOURS = ['12:00', '13:00', '14:00'];
-var ARRAY_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var ARRAY_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var OFFER_TITLE = 'Заголовок предложения №';
 var OFFER_DESCRIPTION = 'Описание предложения №';
 
@@ -29,12 +29,8 @@ var getRandomNumber = function (min, max) {
   return Math.floor(rand);
 };
 
-var getRandomValue = function (array, min, max) {
-  if (array) {
-    return array[getRandomNumber(0, array.length)];
-  } else {
-    return getRandomNumber(min, max);
-  }
+var getRandomValue = function (array) {
+  return array[getRandomNumber(0, array.length)];
 };
 
 var getInfo = function (firstPart, secondPart, isCoord) {
@@ -44,7 +40,8 @@ var getInfo = function (firstPart, secondPart, isCoord) {
   return firstPart + secondPart;
 };
 
-var getRandomArray = function (newArray, array) {
+var getRandomArray = function (array) {
+  var newArray = [];
   for (var i = 0; i < getRandomNumber(1, array.length); i++) {
     newArray.push(getRandomValue(array));
   }
@@ -53,10 +50,8 @@ var getRandomArray = function (newArray, array) {
 
 var createOffer = function (value) {
   var avatarUrl = 'img/avatars/user0' + value + '.png';
-  var coordX = getRandomValue(false, MIN_COORD_X_LOCATION, MAX_COORD_X_LOCATION);
-  var coordY = getRandomValue(false, MIN_COORD_Y_LOCATION, MAX_COORD_Y_LOCATION);
-  var arrPhotos = [];
-  var arrFeatures = [];
+  var coordX = getRandomNumber(MIN_COORD_X_LOCATION, MAX_COORD_X_LOCATION);
+  var coordY = getRandomNumber(MIN_COORD_Y_LOCATION, MAX_COORD_Y_LOCATION);
   var currentOffer = {
     author: {
       avatar: avatarUrl
@@ -64,15 +59,15 @@ var createOffer = function (value) {
     offer: {
       title: getInfo(OFFER_TITLE, value),
       address: getInfo(coordX, coordY, true),
-      price: getRandomValue(false, MIN_PRICE, MAX_PRICE),
+      price: getRandomNumber(MIN_PRICE, MAX_PRICE),
       type: getRandomValue(HOUSING_TYPES),
-      rooms: getRandomValue(false, MIN_ROOM, MAX_ROOM),
-      guests: getRandomValue(false, MIN_GUEST, MAX_GUEST),
+      rooms: getRandomNumber(MIN_ROOM, MAX_ROOM),
+      guests: getRandomNumber(MIN_GUEST, MAX_GUEST),
       checkin: getRandomValue(TIMEIN_HOURS),
       checkout: getRandomValue(TIMEOUT_HOURS),
-      features: getRandomArray(arrPhotos, ARRAY_FEATURES),
+      features: getRandomArray(OFFER_FEATURES),
       description: getInfo(OFFER_DESCRIPTION, value),
-      photos: getRandomArray(arrFeatures, ARRAY_PHOTOS)
+      photos: getRandomArray(OFFER_PHOTOS)
     },
     location: {
       x: coordX,
