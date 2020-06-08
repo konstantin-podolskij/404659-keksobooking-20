@@ -4,6 +4,12 @@ var MIN_COORD_Y_LOCATION = 130;
 var MAX_COORD_Y_LOCATION = 630;
 var MIN_COORD_X_LOCATION = 0;
 var MAX_COORD_X_LOCATION = 1200;
+var FIRST_DIVIDER = 100;
+var SECOND_DIVIDER = 10;
+var FIRST_REMAINDER = 1;
+var SECOND_REMAINDER = 5;
+var THIRD_REMAINDER = 10;
+var FOURTH_REMAINDER = 20;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var MIN_PRICE = 0;
@@ -53,15 +59,15 @@ var getRandomArray = function (array) {
 };
 
 var numToString = function (num, array) {
-  num = Math.abs(num) % 100;
-  var remainder = num % 10;
-  if (num > 10 && num < 20) {
+  num = Math.abs(num) % FIRST_DIVIDER;
+  var remainder = num % SECOND_DIVIDER;
+  if (num > THIRD_REMAINDER && num < FOURTH_REMAINDER) {
     return array[2];
   }
-  if (remainder > 1 && remainder < 5) {
+  if (remainder > FIRST_REMAINDER && remainder < SECOND_REMAINDER) {
     return array[1];
   }
-  if (remainder === 1) {
+  if (remainder === FIRST_REMAINDER) {
     return array[0];
   }
 
@@ -172,6 +178,7 @@ var getFeatureName = function (type) {
 
 var getFeaturesInfo = function (array) {
   var arrFeaturesName = [];
+
   array.forEach(function (elem) {
     arrFeaturesName.push(getFeatureName(elem));
   });
@@ -189,6 +196,7 @@ var getTimeInfo = function (checkin, checkout) {
 
 var renderPinList = function (array) {
   var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < array.length; i++) {
     fragment.appendChild(createPin(array[i]));
   }
