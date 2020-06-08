@@ -52,8 +52,8 @@ var getRandomArray = function (array) {
   return newArray;
 };
 
-var numToString = function (count, array) {
-  var num = Math.abs(num) % 100;
+var numToString = function (num, array) {
+  num = Math.abs(num) % 100;
   var remainder = num % 10;
   if (num > 10 && num < 20) {
     return array[2];
@@ -142,7 +142,7 @@ var getHousingType = function (housingType) {
   return typeName;
 };
 
-var getfeatureName = function (type) {
+var getFeatureName = function (type) {
   var featuresName = 'Неизвестно';
   switch (type) {
     case 'wifi':
@@ -173,7 +173,7 @@ var getfeatureName = function (type) {
 var getFeaturesInfo = function (array) {
   var arrFeaturesName = [];
   array.forEach(function (elem) {
-    arrFeaturesName.push(getfeatureName(elem));
+    arrFeaturesName.push(getFeatureName(elem));
   });
 
   return arrFeaturesName.join(', ');
@@ -193,23 +193,22 @@ var renderPinList = function (array) {
     fragment.appendChild(createPin(array[i]));
   }
   mapPins.appendChild(fragment);
-  renderCard(array[0]);
 };
 
 var addPhotos = function (cardItem, array) {
   var imageBlock = cardItem.querySelector('.popup__photos');
+  var offerImage = imageBlock.querySelector('img').cloneNode(true);
+
   imageBlock.removeChild(imageBlock.firstElementChild);
 
   for (var i = 0; i < array.length; i++) {
-    var image = document.createElement('img');
-    image.src = array[i];
-    imageBlock.appendChild(image);
+    offerImage.src = array[i];
+    imageBlock.appendChild(offerImage);
   }
 };
 
 var renderCard = function (elem) {
-  var cardElement = cardTemplate.cloneNode(true);
-  var cardItem = cardElement.content.querySelector('.map__card');
+  var cardItem = cardTemplate.content.querySelector('.map__card').cloneNode(true);
 
   cardItem.querySelector('.popup__title').textContent = elem.offer.title;
   cardItem.querySelector('.popup__type').textContent = getHousingType(elem.offer.type);
@@ -223,10 +222,10 @@ var renderCard = function (elem) {
 
   addPhotos(cardItem, elem.offer.photos);
 
-  map.insertBefore(cardElement, mapFilters);
+  map.insertBefore(cardItem, mapFilters);
 };
-
 
 map.classList.remove('map--faded');
 
 renderPinList(fillArrayOffer());
+renderCard(fillArrayOffer()[0]);
